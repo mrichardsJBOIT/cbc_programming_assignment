@@ -1,14 +1,18 @@
 using ProgrammingAssignment.Convert;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Image.Test
 {
     public class ShortHexUnit
     {
+        ITestOutputHelper _testOutputHelper;
         [Theory]
         [MemberData(nameof(GetHexes))]
         public void ShrinkHex(string hex, string resultShortHex)
         {
+         //   _testOutputHelper.WriteLine("hex" + hex + " resultShortHex" + resultShortHex);
+           
             Assert.Equal(resultShortHex, ShortHex.EncodeHex(hex));
         }
 
@@ -41,16 +45,17 @@ namespace Image.Test
         public static TheoryData<string[], string[]> GetDuplicateLines()
         {
             string[] twoDuplicates = { "FFF11A", "FFF11A" };
-            string[] twoDuplicatesExpectation = { "FFF11A", "FFF11A" };
+            string[] twoDuplicatesExpectation = { "FFF11A", ":" };
             string[] noDuplicates = { "43A009", "1648DE" };
-            string[] mutlipleDuplicates = { "43A009", "1648DE", "1648DE", "1648DE", "1648DE", "FFF11A", "FFF11A", "FFF11A", "43A009", };
-            string[] multipleDuplicatesExpectation = { "43A009", "1648DE", ":", ":", ":", "FFF11A", ":", ":", "43A009", };
+            string[] mutlipleDuplicates =           { "43A009", "1648DE", "1648DE", "1648DE", "1648DE", "FFF11A", "FFF11A", "FFF11A", "43A009", };
+            string[] multipleDuplicatesExpectation = { "43A009","1648DE", ":"    , ":"     , ":"     , "FFF11A", ":"     , ":"     , "43A009", };
 
             return new TheoryData<string[], string[]>
             {
-                { twoDuplicates, twoDuplicatesExpectation },
-                { noDuplicates, noDuplicates },
+               
                 { mutlipleDuplicates, multipleDuplicatesExpectation },
+                { noDuplicates, noDuplicates },
+                { twoDuplicates, twoDuplicatesExpectation },
             };
         }
 
