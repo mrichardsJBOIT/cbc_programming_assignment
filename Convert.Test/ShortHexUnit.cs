@@ -1,18 +1,14 @@
 using ProgrammingAssignment.Convert;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Image.Test
 {
     public class ShortHexUnit
     {
-        ITestOutputHelper _testOutputHelper;
         [Theory]
         [MemberData(nameof(GetHexes))]
         public void ShrinkHex(string hex, string resultShortHex)
-        {
-         //   _testOutputHelper.WriteLine("hex" + hex + " resultShortHex" + resultShortHex);
-           
+        {           
             Assert.Equal(resultShortHex, ShortHex.EncodeHex(hex));
         }
 

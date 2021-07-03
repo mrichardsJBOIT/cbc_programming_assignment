@@ -77,7 +77,6 @@ namespace ProgrammingAssignment.Convert
         {
             string[] shortened = lines;
 
-            // TODO: implement deduplication
             // First attempt will use niave for loop
             // TODO: Refactor to use a map function  
             string checker = lines[0];
