@@ -78,10 +78,11 @@ namespace ProgrammingAssignment.Convert
             string[] shortened = lines;
 
             // TODO: implement deduplication
+            // First attempt will use niave for loop
+            // TODO: Refactor to use a map function  
             string checker = lines[0];
             for (int i = 0; i < lines.Length-1; i++)
             {
-           
                 if (lines[i+1] == checker)
                 {
                     shortened[i + 1] = RepeatLine;
