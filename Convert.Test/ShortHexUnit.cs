@@ -1,4 +1,5 @@
 using ProgrammingAssignment.Convert;
+using System.Text;
 using Xunit;
 
 namespace Image.Test
@@ -52,6 +53,35 @@ namespace Image.Test
                 { mutlipleDuplicates, multipleDuplicatesExpectation },
                 { noDuplicates, noDuplicates },
                 { twoDuplicates, twoDuplicatesExpectation },
+            };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDuplicateHexes))]
+        public void MultipleDuplicateHex(string hex, string resultDuplicateHex)
+        {
+            Assert.Equal(resultDuplicateHex, ShortHex.EncodeHex(hex));
+        }
+
+        public static TheoryData<string, string> GetDuplicateHexes()
+        {
+            StringBuilder sbLarge = new StringBuilder("A", 405);
+            for (int i = 0; i < 400; i++)
+            {
+                sbLarge.Append("0");
+            }
+            sbLarge.Append("B");
+
+                return new TheoryData<string, string>
+            {
+                { "8000000000000000000008", "8g08" },
+                { sbLarge.ToString(), "Az0B" },
+                { "800HH004", "8H0HHH04" },
+                { "555554444333221", "K5J4I3H21" },
+                { "000000", "L," },
+                { "0", "," },
+                { "FFFFFF", "L!" },
+                { "F", "!" },
             };
         }
 

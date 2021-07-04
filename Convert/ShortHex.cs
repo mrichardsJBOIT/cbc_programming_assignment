@@ -71,7 +71,70 @@ namespace ProgrammingAssignment.Convert
 
         internal static string EncodeHex(string hexData)
         {
-            return CountDuplicatedCharacters(hexData.ToCharArray()); 
+            //TODO: Refactor to an inner class
+            char c = ' ';
+            var reducedCharsArrayTemplate = new[] { new { ch = c, repeats = 0 } };
+            var reducedCharsList = reducedCharsArrayTemplate.ToList();
+
+            // First attempt will use naive for loop
+            //This is very ugly
+            //TODO: REFACTOR...
+
+            char checker = hexData[0];
+            int repeated = 1;
+            for (int i = 0; i <= hexData.Length - 1; i++)
+            {
+                if ((i < hexData.Length - 1) && (hexData[i + 1] == checker))
+                {
+                    repeated++;
+                    continue;
+                }
+                else
+                {
+                    reducedCharsList.Add(new { ch = checker, repeats = repeated });
+                    if (i < hexData.Length - 1)
+                    {
+                        checker = hexData[i + 1];
+                    }
+                    repeated = 1;
+                }
+            }
+            StringBuilder sb = new StringBuilder("", reducedCharsList.Count());
+
+            //TODO: Refactor into own function
+            foreach (var item in reducedCharsList)
+            {
+                if (item.repeats == 0) //probably best to remove the first item from the list
+                {
+                    continue;
+                }
+                if (item.repeats > 1)
+                {
+                    RepeatSymbol.TryGetValue(item.repeats, out char sym);
+                    sb.Append(sym);
+                }
+
+                sb.Append(item.ch);
+            }
+
+            //Hex lines ending in "0" or "F"
+            //should have all ending sequential "0"s or "F"s
+            //replaced with a single "," or "!" respectively.
+
+            string encodedHex = sb.ToString();
+            if (encodedHex.EndsWith("0"))
+            {
+      
+                encodedHex = String.Concat(encodedHex.Substring(0, encodedHex.LastIndexOf("0")),
+                                           ZeroEndLine);
+            }
+            if (encodedHex.EndsWith("F"))
+            {
+
+                encodedHex = String.Concat(encodedHex.Substring(0, encodedHex.LastIndexOf("F")),
+                                           FEndLine);
+            }
+            return encodedHex;
         }
 
         internal static string[] DeduplicateLines(string[] lines)
@@ -96,53 +159,5 @@ namespace ProgrammingAssignment.Convert
             return shortened;
         }
 
-        internal static string CountDuplicatedCharacters(char[] characters)
-        {
-            //TODO: Refactor to an inner class
-            char c = ' ';
-            var reducedCharsArrayTemplate =  new[] { new { ch = c, repeats = 0 } };
-            var reducedCharsList = reducedCharsArrayTemplate.ToList();
-
-            // First attempt will use naive for loop
-            //This is very ugly
-            //TODO: REFACTOR...
-          
-            char checker = characters[0];
-            int repeated = 1;
-            for (int i = 0; i <= characters.Length - 1; i++)
-            {
-                if ((i < characters.Length -1 ) && (characters[i + 1] == checker))
-                {
-                    repeated++;
-                    continue;
-                }
-                else
-                {                    
-                    reducedCharsList.Add(new { ch = checker, repeats = repeated });
-                    if (i < characters.Length - 1) {
-                        checker = characters[i + 1];
-                    }              
-                    repeated = 1;
-                }
-            }
-            StringBuilder sb = new StringBuilder("", reducedCharsList.Count());
-
-            foreach (var item in reducedCharsList)
-            {
-                if (item.repeats == 0) //probably best to remove the first item from the list
-                {
-                    continue;
-                }
-                if (item.repeats>1)
-                {
-                    RepeatSymbol.TryGetValue(item.repeats, out char sym);
-                    sb.Append(sym.ToString());
-                }
-
-                sb.Append(item.ch);                
-            }
-
-            return sb.ToString();
-        }
     }
 }
