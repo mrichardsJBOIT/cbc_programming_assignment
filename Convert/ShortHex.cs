@@ -71,14 +71,14 @@ namespace ProgrammingAssignment.Convert
 
         internal static string EncodeHex(string hexData)
         {
-            //TODO: Refactor to an inner class
+            // TODO: Refactor to an inner class
             char c = ' ';
             var reducedCharsArrayTemplate = new[] { new { ch = c, repeats = 0 } };
             var reducedCharsList = reducedCharsArrayTemplate.ToList();
 
             // First attempt will use naive for loop
-            //This is very ugly
-            //TODO: REFACTOR...
+            // This is very ugly
+            // TODO: REFACTOR...
 
             char checker = hexData[0];
             int repeated = 1;
@@ -93,21 +93,17 @@ namespace ProgrammingAssignment.Convert
                 {
                     reducedCharsList.Add(new { ch = checker, repeats = repeated });
                     if (i < hexData.Length - 1)
-                    {
-                        checker = hexData[i + 1];
-                    }
+                      checker = hexData[i + 1];
+                    
                     repeated = 1;
                 }
             }
             StringBuilder sb = new StringBuilder("", reducedCharsList.Count());
+            reducedCharsList.RemoveAll(s=> s.repeats == 0);
 
             //TODO: Refactor into own function
             foreach (var item in reducedCharsList)
             {
-                if (item.repeats == 0) //probably best to remove the first item from the list
-                {
-                    continue;
-                }
                 if (item.repeats > 1)
                 {
                     RepeatSymbol.TryGetValue(item.repeats, out char sym);
@@ -123,17 +119,11 @@ namespace ProgrammingAssignment.Convert
 
             string encodedHex = sb.ToString();
             if (encodedHex.EndsWith("0"))
-            {
-      
-                encodedHex = String.Concat(encodedHex.Substring(0, encodedHex.LastIndexOf("0")),
-                                           ZeroEndLine);
-            }
+              encodedHex = String.Concat(encodedHex.Substring(0, encodedHex.LastIndexOf("0")),ZeroEndLine);
+ 
             if (encodedHex.EndsWith("F"))
-            {
-
-                encodedHex = String.Concat(encodedHex.Substring(0, encodedHex.LastIndexOf("F")),
-                                           FEndLine);
-            }
+              encodedHex = String.Concat(encodedHex.Substring(0, encodedHex.LastIndexOf("F")),FEndLine);
+            
             return encodedHex;
         }
 
@@ -150,10 +140,9 @@ namespace ProgrammingAssignment.Convert
                 {
                     shortened[i + 1] = RepeatLine;
                     continue;
-                } else
-                {
-                    checker = lines[i+1];
-                }
+                } 
+                else
+                  checker = lines[i+1];
             }
 
             return shortened;
