@@ -71,73 +71,6 @@ namespace ProgrammingAssignment.Convert
 
         internal static string EncodeHex(string hexData)
         {
-            Console.WriteLine(hexData);
-
-            //var v = CountDuplicatedCharacters(hexData.ToCharArray());
-
-
-            // TODO: implement repeated character replacement
-            string distinctHex = new string(hexData.ToArray().Distinct().ToArray());
-            Console.WriteLine(distinctHex);
-
-            //Stack<char> outHex = new();
-
-            //for (int i = distinctHex.Length - 1; i > 0 ; i--)
-            //{
-            //    int key =0; //will 0 be present in dictionary?
-
-            //    if(Int32.TryParse(distinctHex, out key))
-            //    {
-            //        char sym;
-            //        if (RepeatSymbol.TryGetValue(key, out sym))
-            //        {
-            //            // Found the hex string in the dictionary
-            //            // We'll assume that the last charactar in the hex is the repeated chaaracter
-            //            // Un clear what the translation rules are.
-            //            // The test data indicates that:
-            //            // 1. The repeated character appears in the translated hex
-            //            // 2. The symbol found for the non repeating and existing characters
-            //            //    appears between the first and last 'reduced' characters. 
-            //            //    Assume it's before the last character so it indicates which one is repeating
-            //            //string reverseTranslatedHex = 
-            //            //    (string)distinctHex.Insert(distinctHex.Length - 1, sym.ToString()).Reverse();
-
-
-            //            string insertString = sym.ToString();
-            //            string transHex = distinctHex.Insert(distinctHex.Length - 1, insertString);
-            //            char[] tempArr = transHex.ToCharArray();
-            //            Array.Reverse(tempArr);
-            //            string reverseTranslatedHex = new string(tempArr);
-
-            //            // reverse it so we can push it on to the stack
-            //            foreach (var item in reverseTranslatedHex)
-            //            {
-            //                outHex.Push(item);
-            //            }
-            //            // At this point we've considered the whole string, based on the assumed logic
-            //            // As such we'll break out of the for loop
-            //            break;
-            //        }
-            //        else
-            //        {
-            //            string v = distinctHex.Substring(i, 1);
-            //            char toRemove = v.ToCharArray()[0];
-            //            outHex.Push(toRemove);
-            //            distinctHex = distinctHex.Remove(i, 1);
-            //        }
-            //    } 
-            //    else
-            //    {
-            //        string v = distinctHex.Substring(i, 1);
-            //        char toRemove = v.ToCharArray()[0];
-            //        outHex.Push(toRemove);
-            //        distinctHex = distinctHex.Remove(i, 1);
-
-            //    }
-            //}
-
-
-            //return String.Join("",outHex);
             return CountDuplicatedCharacters(hexData.ToCharArray()); 
         }
 
@@ -145,7 +78,7 @@ namespace ProgrammingAssignment.Convert
         {
             string[] shortened = lines;
 
-            // First attempt will use niave for loop
+            // First attempt will use naive for loop
             // TODO: Refactor to use a map function  
             string checker = lines[0];
             for (int i = 0; i < lines.Length-1; i++)
@@ -165,11 +98,14 @@ namespace ProgrammingAssignment.Convert
 
         internal static string CountDuplicatedCharacters(char[] characters)
         {
+            //TODO: Refactor to an inner class
             char c = ' ';
             var reducedCharsArrayTemplate =  new[] { new { ch = c, repeats = 0 } };
             var reducedCharsList = reducedCharsArrayTemplate.ToList();
 
             // First attempt will use naive for loop
+            //This is very ugly
+            //TODO: REFACTOR...
           
             char checker = characters[0];
             int repeated = 1;
